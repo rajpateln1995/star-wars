@@ -1,6 +1,7 @@
 package com.example.starwars.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -34,7 +35,11 @@ class MatchAdapter(var matchList: List<MatchItem>, var context: Context) :
             binding.tvPlayer1.text = data.playerName1
             binding.tvPlayer2.text = data.playerName2
             binding.tvScore.text = context.getString(R.string.score, data.score1, data.score2)
-            if ()
+            if (data.score1 > data.score2) {
+                binding.clMatch.setBackgroundColor(Color.GREEN)
+            } else if (data.score1 < data.score2) {
+                binding.clMatch.setBackgroundColor(Color.RED)
+            }
         }
     }
 }
