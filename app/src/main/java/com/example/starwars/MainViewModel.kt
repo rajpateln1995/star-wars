@@ -28,7 +28,7 @@ class MainViewModel: ViewModel() {
                         is ApiResponse.Success -> {
                             withContext(Dispatchers.Main) {
                                 it.data.forEach { player ->
-                                    playerMap.put(player.id, PlayerItem(player.id ,player.icon, player.name, 0))
+                                    playerMap.put(player.id, PlayerItem(player.id ,player.icon, player.name, 0, 0))
                                     playerMatchMap.put(player.id, ArrayList())
                                 }
                                 getMatchList(context)
@@ -83,6 +83,13 @@ class MainViewModel: ViewModel() {
 
                                         val p1_score = m.player1.score
                                         val p2_score = m.player2.score
+
+                                        playerMap.get(p1_id)?.let {
+                                            it.totalScore += p1_score
+                                        }
+                                        playerMap.get(p2_id)?.let {
+                                            it.totalScore += p2_score
+                                        }
 
                                         playerMatchMap.get(p1_id)?.add(MatchItem(p1_name!!, p2_name!!, p1_score.toString(), p2_score.toString()))
                                         playerMatchMap.get(p2_id)?.add(MatchItem(p2_name!!, p1_name!!, p2_score.toString(), p1_score.toString()))

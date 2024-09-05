@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity(), PlayerSelectListener {
     val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     val viewModel: MainViewModel by viewModels()
     private lateinit var playerAdapter: PlayersListAdapter
+    private val decending = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +26,17 @@ class MainActivity : AppCompatActivity(), PlayerSelectListener {
     }
 
     private fun initUI() {
+
         viewModel.playerList.observe(this) {
-            playerAdapter = PlayersListAdapter(it, this, this)
+            val list = it.sortedWith(
+                compareByDescending<PlayerItem> { it.score }
+                    .thenByDescending { it.totalScore }
+            )
+            playerAdapter = PlayersListAdapter(list, this, this)
             binding.rvPlayers.adapter = playerAdapter
             binding.rvPlayers.layoutManager = LinearLayoutManager(this)
         }
+
     }
 
     override fun onPlayerSelected(data: PlayerItem) {
