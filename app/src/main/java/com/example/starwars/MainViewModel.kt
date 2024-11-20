@@ -91,11 +91,16 @@ class MainViewModel: ViewModel() {
                                             it.totalScore += p2_score
                                         }
 
-                                        playerMatchMap.get(p1_id)?.add(MatchItem(p1_name!!, p2_name!!, p1_score.toString(), p2_score.toString()))
-                                        playerMatchMap.get(p2_id)?.add(MatchItem(p2_name!!, p1_name!!, p2_score.toString(), p1_score.toString()))
+                                        playerMatchMap.get(p1_id)?.add(MatchItem(m.match, p1_name!!, p2_name!!, p1_score.toString(), p2_score.toString()))
+                                        playerMatchMap.get(p2_id)?.add(MatchItem(m.match, p2_name!!, p1_name!!, p2_score.toString(), p1_score.toString()))
                                     }
                                 }
-                                playerList.value = ArrayList(playerMap.values)
+                                val list = ArrayList(playerMap.values)
+                                val finalList = list.sortedWith(
+                                    compareByDescending<PlayerItem> { it.score }
+                                        .thenByDescending { it.totalScore }
+                                )
+                                playerList.value = ArrayList(finalList)
                             }
                         }
 

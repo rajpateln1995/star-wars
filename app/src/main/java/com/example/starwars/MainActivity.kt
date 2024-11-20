@@ -21,20 +21,25 @@ class MainActivity : AppCompatActivity(), PlayerSelectListener {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         viewModel.getPlayersList(this)
-        viewModel.getMatchList(this)
+//        viewModel.getMatchList(this)
         initUI()
     }
 
     private fun initUI() {
-
+        playerAdapter = PlayersListAdapter(listOf(), this, this)
+        binding.rvPlayers.adapter = playerAdapter
+        binding.rvPlayers.layoutManager = LinearLayoutManager(this)
         viewModel.playerList.observe(this) {
-            val list = it.sortedWith(
-                compareByDescending<PlayerItem> { it.score }
-                    .thenByDescending { it.totalScore }
-            )
-            playerAdapter = PlayersListAdapter(list, this, this)
-            binding.rvPlayers.adapter = playerAdapter
-            binding.rvPlayers.layoutManager = LinearLayoutManager(this)
+
+            playerAdapter.playerList = it
+            playerAdapter.notifyDataSetChanged()
+
+        }
+
+        binding.btnSort.setOnClickListener {
+            viewModel.playerList.value?.let {
+                viewModel.playerList.value = ArrayList(it.reversed())
+            }
         }
 
     }
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity(), PlayerSelectListener {
     override fun onPlayerSelected(data: PlayerItem) {
         val intent = Intent(this, PlayerDetailActivity:: class.java).apply {
             putExtra("MATCH_LIST",
-                viewModel.playerMatchMap.get(data.id)?.let { ArrayList(it) })
+                viewModel.playerMatchMap.get(data.id)?.let { ArrayList(it.sortedByDescending { it.match }) })
         }
 
         startActivity(intent)

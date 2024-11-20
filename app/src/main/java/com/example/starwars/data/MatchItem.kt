@@ -5,10 +5,11 @@ import android.os.Parcel
 import java.io.Serializable
 
 data class MatchItem(
-    var playerName1: String,
-    var playerName2: String,
-    var score1: String,
-    var score2: String
+    val match: Long,
+    val playerName1: String,
+    val playerName2: String,
+    val score1: String,
+    val score2: String
 ): Serializable {
 
     override fun toString(): String {

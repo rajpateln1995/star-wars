@@ -36,9 +36,11 @@ class MatchAdapter(var matchList: List<MatchItem>, var context: Context) :
             binding.tvPlayer2.text = data.playerName2
             binding.tvScore.text = context.getString(R.string.score, data.score1, data.score2)
             if (data.score1 > data.score2) {
-                binding.clMatch.setBackgroundColor(Color.GREEN)
+                binding.clMatch.setBackgroundColor(context.getColor(R.color.green))
             } else if (data.score1 < data.score2) {
-                binding.clMatch.setBackgroundColor(Color.RED)
+                binding.clMatch.setBackgroundColor(context.getColor(R.color.red))
+            } else {
+                binding.clMatch.setBackgroundColor(context.getColor(R.color.white))
             }
         }
     }
